@@ -1,0 +1,19 @@
+{
+  "name": "t1Mechat",
+  "short_name": "t1Mechat",
+  "description": "简单纯粹的聊天，回到沟通本身",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#1a1a2e",
+  "theme_color": "#6C5CE7",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
