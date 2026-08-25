@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#6C5CE7">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="t1Mechat">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/icon.svg">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<title>t1Mechat · 简单纯粹的聊天 · 回到沟通本身</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===== 登录 / 注册 ===== -->
+<div id="authView" class="auth-wrap">
+  <div class="auth-card">
+    <div class="auth-logo">M</div>
+    <h1 class="auth-name">t1Mechat</h1>
+    <p class="auth-slogan">简单纯粹的聊天 · 回到沟通本身</p>
+    <div class="auth-tabs">
+      <button id="tabLogin" class="auth-tab active">登录</button>
+      <button id="tabReg" class="auth-tab">注册</button>
+    </div>
+    <div class="field" id="fieldNick">
+      <label>昵称</label>
+      <input id="regNick" maxlength="12" placeholder="别人看到你的名字">
+    </div>
+    <div class="field">
+      <label>t1Mechat 号</label>
+      <input id="inUsername" placeholder="字母 / 数字 / 下划线，3-20 位" autocomplete="username">
+    </div>
+    <div class="field">
+      <label>密码</label>
+      <input id="inPassword" type="password" placeholder="密码（至少 4 位）" autocomplete="current-password">
+    </div>
+    <button id="authBtn" class="btn-primary block">登录</button>
+    <p id="authTip" class="auth-tip"></p>
+    <p class="auth-links">
+      <a href="site/help.html" target="_blank" rel="noopener">帮助中心</a><span>·</span>
+      <a href="site/privacy.html" target="_blank" rel="noopener">隐私政策</a><span>·</span>
+      <a href="site/terms.html" target="_blank" rel="noopener">服务协议</a>
+    </p>
+  </div>
+</div>
+
+<!-- ===== 主界面 ===== -->
+<div id="mainView" class="app hidden">
+  <nav class="rail">
+    <div class="rail-logo">M</div>
+    <button id="btnChats" class="rail-btn active" title="聊天">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.5-.76L3 21l1.76-6A8.5 8.5 0 1 1 21 11.5z"/></svg>
+      <span id="railChatBadge" class="rail-badge hidden"></span>
+    </button>
+    <button id="btnContacts" class="rail-btn" title="通讯录">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <span id="railReqBadge" class="rail-badge hidden"></span>
+    </button>
+    <button id="btnAdd" class="rail-btn" title="添加好友">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="4"/><path d="M2 21v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="16" y1="11" x2="22" y2="11"/></svg>
+    </button>
+    <button id="btnCreateGroup" class="rail-btn" title="发起群聊">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-3-3.87"/><path d="M9 21v-2a4 4 0 0 1 4-4 4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><circle cx="9" cy="7" r="4"/><circle cx="17" cy="7" r="3"/></svg>
+    </button>
+    <div class="rail-spacer"></div>
+    <div id="meAvatar" class="me-avatar" title="我的资料"></div>
+  </nav>
+
+  <aside id="panel" class="panel"></aside>
+
+  <section id="chatArea" class="chat-area">
+    <div class="empty-chat">
+      <div class="empty-bubble"></div>
+      <p>选择一个聊天，开始和朋友聊起来</p>
+    </div>
+  </section>
+</div>
+
+<!-- ===== 添加好友弹窗 ===== -->
+<div id="modalAdd" class="modal hidden">
+  <div class="modal-card">
+    <div class="modal-head">
+      <h3>添加好友</h3>
+      <button id="modalClose" class="icon-btn" title="关闭">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-search">
+      <input id="searchInput" placeholder="输入 t1Mechat 号或昵称搜索">
+      <button id="searchBtn" class="btn-primary small">搜索</button>
+    </div>
+    <div id="searchResults" class="search-results">
+      <p class="search-hint">搜到的人会出现在这里</p>
+    </div>
+    <div id="addForm" class="add-form hidden">
+      <p>向 <b id="addTargetName"></b> 发送好友请求：</p>
+      <input id="addMessage" maxlength="50" placeholder="打个招呼吧（可不填）">
+      <button id="addConfirm" class="btn-primary block">发送请求</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 发起群聊弹窗 ===== -->
+<div id="modalCreateGroup" class="modal hidden">
+  <div class="modal-card">
+    <div class="modal-head">
+      <h3>发起群聊</h3>
+      <button id="grpClose" class="icon-btn" title="关闭">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="field" style="margin-bottom:12px">
+      <label>群名称</label>
+      <input id="grpName" maxlength="20" placeholder="给群聊起个名字">
+    </div>
+    <div class="grp-title">选择群成员（已选 <b id="grpCount">0</b>）</div>
+    <div id="grpMemberList" class="grp-member-list"></div>
+    <button id="grpCreate" class="btn-primary block" style="margin-top:16px">创建群聊</button>
+  </div>
+</div>
+
+<!-- ===== 我的资料 ===== -->
+<div id="profilePop" class="profile-pop hidden">
+  <div class="profile-row"><span class="profile-label">昵称</span><b id="popNickname"></b></div>
+  <div class="profile-row"><span class="profile-label">t1Mechat 号</span><b id="popId"></b></div>
+  <button id="copyId" class="profile-copy">复制我的 t1Mechat 号</button>
+  <a href="site/help.html" target="_blank" rel="noopener" class="profile-help">帮助中心 · 隐私 · 协议</a>
+  <button id="logoutBtn" class="profile-logout">退出登录</button>
+</div>
+
+<!-- ===== 表情面板 ===== -->
+<div id="emojiPanel" class="emoji-panel hidden"></div>
+
+<div id="toast" class="toast hidden"></div>
+
+<script src="app.js"></script>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function () {
+    navigator.serviceWorker.register("/sw.js").catch(function () {});
+  });
+}
+</script>
+</body>
+</html>
